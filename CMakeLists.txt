@@ -17,8 +17,9 @@ include(GNUInstallDirs)
 
 # Note that googlemock target already builds googletest.
 option(BUILD_GMOCK "Builds the googlemock subproject" ON)
-option(INSTALL_GTEST "Enable installation of googletest. (Projects embedding googletest may want to turn this OFF.)" ON)
+option(INSTALL_GTEST "Enable installation of googletest. (Projects embedding googletest may want to turn this OFF.)" OFF)
 option(GTEST_HAS_ABSL "Use Abseil and RE2. Requires Abseil and RE2 to be separately added to the build." OFF)
+
 
 if(GTEST_HAS_ABSL)
   if(NOT TARGET absl::base)
@@ -33,4 +34,19 @@ if(BUILD_GMOCK)
   add_subdirectory( googlemock )
 else()
   add_subdirectory( googletest )
+endif()
+
+
+#######Custom Install########
+option(Custom_Install "Custom Install" ON)
+if (Custom_Install)
+  install(TARGETS gtest gtest_main gmock gmock_main
+          ARCHIVE DESTINATION ${TEST_INSTALL_PREFIX}/googletest/lib
+          LIBRARY DESTINATION ${TEST_INSTALL_PREFIX}/googletest/lib
+          RUNTIME DESTINATION ${TEST_INSTALL_PREFIX}/googletest/bin)
+
+  install(DIRECTORY
+          googletest/include googlemock/include
+          DESTINATION ${TEST_INSTALL_PREFIX}/googletest/include
+          FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
 endif()
