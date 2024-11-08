@@ -104,20 +104,6 @@ if (INSTALL_GTEST)
   install(FILES ${version_file} ${config_file}
     COMPONENT "${PROJECT_NAME}"
     DESTINATION ${cmake_files_install_dir})
-  ###Custom Install###
-  if(CUSTOM_INSTALL)
-    install(EXPORT ${targets_export_name}
-            COMPONENT "${PROJECT_NAME}"
-            NAMESPACE ${cmake_package_name}::
-            DESTINATION ${TEST_INSTALL_PREFIX}/googletest/share/cmake/${cmake_package_name})
-#    set(pcconfig_file "${generated_dir}/*.pc")
-#    install(FILES ${version_file} ${config_file} ${pcconfig_file}
-#            COMPONENT "${PROJECT_NAME}"
-#            DESTINATION ${TEST_INSTALL_PREFIX}/googletest/share/cmake/${cmake_package_name})
-    install(DIRECTORY ${generated_dir}
-            DESTINATION ${TEST_INSTALL_PREFIX}/googletest/share/cmake/${cmake_package_name})
-#            FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
-  endif ()
 endif()
 
 # Where Google Test's .h files can be found.
