@@ -332,17 +332,17 @@ function(install_project)
     endforeach()
   endif()
   #custom install
-  if(CUSTOM_INSTALL)
+  if(GTEST_CUSTOM_INSTALL)
     install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/"
             COMPONENT "${PROJECT_NAME}"
-            DESTINATION ${custom_install_dir}/include)
+            DESTINATION ${gtest_custom_install_dir}/include)
     # Install the project targets.
     install(TARGETS ${ARGN}
             EXPORT ${targets_export_name}
             COMPONENT "${PROJECT_NAME}"
-            RUNTIME DESTINATION "${custom_install_dir}/bin"
-            ARCHIVE DESTINATION "${custom_install_dir}/lib"
-            LIBRARY DESTINATION "${custom_install_dir}/lib")
+            RUNTIME DESTINATION "${gtest_custom_install_dir}/bin"
+            ARCHIVE DESTINATION "${gtest_custom_install_dir}/lib"
+            LIBRARY DESTINATION "${gtest_custom_install_dir}/lib")
     if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
       # Install PDBs.
       foreach(t ${ARGN})
@@ -352,7 +352,7 @@ function(install_project)
         install(FILES
                 "${t_pdb_output_directory}/\${CMAKE_INSTALL_CONFIG_NAME}/$<$<CONFIG:Debug>:${t_pdb_name_debug}>$<$<NOT:$<CONFIG:Debug>>:${t_pdb_name}>.pdb"
                 COMPONENT "${PROJECT_NAME}"
-                DESTINATION ${custom_install_dir}/lib
+                DESTINATION ${gtest_custom_install_dir}/lib
                 OPTIONAL)
       endforeach()
     endif()
@@ -363,7 +363,7 @@ function(install_project)
               "${configured_pc}" @ONLY)
       install(FILES "${configured_pc}"
               COMPONENT "${PROJECT_NAME}"
-              DESTINATION "${custom_install_dir}/lib/pkgconfig")
+              DESTINATION "${gtest_custom_install_dir}/lib/pkgconfig")
     endforeach()
   endif ()
 endfunction()

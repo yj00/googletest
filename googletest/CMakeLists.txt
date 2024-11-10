@@ -87,7 +87,7 @@ config_compiler_and_linker()  # Defined in internal_utils.cmake.
 set(cmake_package_name GTest CACHE INTERNAL "")
 
 # Create the CMake package file descriptors.
-if (INSTALL_GTEST OR CUSTOM_INSTALL)
+if (INSTALL_GTEST OR GTEST_CUSTOM_INSTALL)
   include(CMakePackageConfigHelpers)
   set(targets_export_name ${cmake_package_name}Targets CACHE INTERNAL "")
   set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated" CACHE INTERNAL "")
@@ -106,8 +106,8 @@ if (INSTALL_GTEST OR CUSTOM_INSTALL)
             COMPONENT "${PROJECT_NAME}"
             DESTINATION ${cmake_files_install_dir})
   endif ()
-  if(CUSTOM_INSTALL)
-    set(cmake_files_custom_install_dir "${custom_install_dir}/lib/cmake/${cmake_package_name}")
+  if(GTEST_CUSTOM_INSTALL)
+    set(cmake_files_custom_install_dir "${gtest_custom_install_dir}/lib/cmake/${cmake_package_name}")
     install(EXPORT ${targets_export_name}
             COMPONENT "${PROJECT_NAME}"
             NAMESPACE ${cmake_package_name}::
