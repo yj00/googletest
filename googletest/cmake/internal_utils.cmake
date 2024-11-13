@@ -331,39 +331,4 @@ function(install_project)
         DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
     endforeach()
   endif()
-  #custom install
-  if(GTEST_CUSTOM_INSTALL)
-    install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/"
-            COMPONENT "${PROJECT_NAME}"
-            DESTINATION ${gtest_custom_install_dir}/include)
-    # Install the project targets.
-    install(TARGETS ${ARGN}
-            EXPORT ${targets_export_name}
-            COMPONENT "${PROJECT_NAME}"
-            RUNTIME DESTINATION "${gtest_custom_install_dir}/bin"
-            ARCHIVE DESTINATION "${gtest_custom_install_dir}/lib"
-            LIBRARY DESTINATION "${gtest_custom_install_dir}/lib")
-    if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-      # Install PDBs.
-      foreach(t ${ARGN})
-        get_target_property(t_pdb_name ${t} COMPILE_PDB_NAME)
-        get_target_property(t_pdb_name_debug ${t} COMPILE_PDB_NAME_DEBUG)
-        get_target_property(t_pdb_output_directory ${t} PDB_OUTPUT_DIRECTORY)
-        install(FILES
-                "${t_pdb_output_directory}/\${CMAKE_INSTALL_CONFIG_NAME}/$<$<CONFIG:Debug>:${t_pdb_name_debug}>$<$<NOT:$<CONFIG:Debug>>:${t_pdb_name}>.pdb"
-                COMPONENT "${PROJECT_NAME}"
-                DESTINATION ${gtest_custom_install_dir}/lib
-                OPTIONAL)
-      endforeach()
-    endif()
-    # Configure and install pkgconfig files.
-    foreach(t ${ARGN})
-      set(configured_pc "${generated_dir}/${t}.pc")
-      configure_file("${PROJECT_SOURCE_DIR}/cmake/${t}.pc.in"
-              "${configured_pc}" @ONLY)
-      install(FILES "${configured_pc}"
-              COMPONENT "${PROJECT_NAME}"
-              DESTINATION "${gtest_custom_install_dir}/lib/pkgconfig")
-    endforeach()
-  endif ()
 endfunction()
